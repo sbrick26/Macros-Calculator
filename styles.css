@@ -1,0 +1,22 @@
+body {
+    font-family: Helvetica;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 100px;
+    background-color: beige;
+}
+
+#allinputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input, select {
+    margin: 10px 0px;
+}
+
+#titles {
+    display: flex;
+    align-items: center;
+}

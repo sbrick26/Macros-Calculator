@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <meta charset="UTF-8">
+        <title>Basic Macros Calculator</title>
+    </head>
+
+    <body>
+        <div id="titles">
+            <h1>Basic Macros Calculator</h1>
+            <p>This calculator uses <a href="https://academic.oup.com/ajcn/article-abstract/51/2/241/4695104">The Mifflin, M.D., St Jeor forumla</a> to calculate your TDEE (Total Daily Energy Expenditure). Please input your information below!</p>
+        </div>
+        <div id="allinputs">
+            <label for="sex">Choose a sex (assigned at birth): </label>
+            <select id="select-sex">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <label for="input-weight">Weight in kg (nearest integer): </label>
+            <input id ="input-weight" type="number">
+            <label for="input-height">Height in cm (nearest integer): </label>
+            <input id="input-height" type="number">
+            <label for="input-age">Age: </label>
+            <input id="input-age" type="number"> 
+            <label for="select-activity">Activity Level</label>
+            <select id="select-activity">
+                <option value="sedentary">Sedentary</option>
+                <option value="light">Light Activity</option>
+                <option value="moderate">Moderate Activity</option>
+                <option value="very">Very Active</option>
+            </select>
+            <ul>
+                <li><b>Sedentary</b>: Just normal everyday activity like a little walking, a couple flights of stairs, eating, talking, etc.</li>
+                <li><b>Light Activity</b>: Any activity that burns an additional 200-400 calories for females or 250-500 calories for males more than your sedentary amount.</li>
+                <li><b>Moderate Activity</b>: Any activity that burns an additional 400-650 calories for females or 500-800 calories for males more than your sedentary amount.</li>
+                <li><b>Very Active</b>: Any activity that burns more than about 650 calories for females or more than 800 calories for males in addition to your sedentary amount.</li>
+            </ul>
+            <button id="calculate">Calculate TDEE!</button>
+        </div>
+
+        <div id="displays">
+            <h1>Your Statistics</h1>
+            <h5>Sex: <span id="show-sex"></span></h5>
+            <h5>Weight: <span id="show-weight"></span> kg</h5>
+            <h5>Height: <span id="show-height"></span> cm</h5>
+            <h5>Age: <span id="show-age"></span> years</h5>
+            <h5>Activity Level: <span id="show-activity"></span></h5>
+            
+            <h3>TDEE: <span id="display-TDEE"></span> Calories</h3>
+            <ul>
+                <li>Eat more than this = weight gain.</li>
+                <li>Eat less than this = weight loss.</li>
+                <li>Eat this amount = weight maintenance.</li>
+            </ul>
+        </div>
+        
+        <script>
+            const sexSelect = document.querySelector("#select-sex")
+            const weightInput = document.querySelector("#input-weight")
+            const heightInput = document.querySelector("#input-height")
+            const ageInput = document.querySelector("#input-age")
+            const activitySelect = document.querySelector("#select-activity")
+            const calcButton = document.querySelector("#calculate")
+
+            const displaySex = document.querySelector("#show-sex")
+            const displayWeight = document.querySelector("#show-weight")
+            const displayHeight = document.querySelector("#show-height")
+            const displayAge = document.querySelector("#show-age")
+            const displayActivity = document.querySelector("#show-activity")
+            const displayTDEE = document.querySelector("#display-TDEE")
+
+            calcButton.onclick = function (e) {
+                let tdee = 0
+                if (!weightInput || !heightInput || !ageInput || !activitySelect) {
+                    calcButton.innerHTML = "Please fill all inputs and click again!"
+                }
+                else {
+                    calcButton.innerHTML = "Calculate TDEE!"
+                    
+                    let ree = calcREE()
+                    if (activitySelect.value === "sedentary") {
+                        tdee = ree*1.2
+                    }
+                    else if (activitySelect.value === "light") {
+                        tdee = ree*1.375
+                    }
+                    else if (activitySelect.value === "moderate") {
+                        tdee = ree*1.55
+                    }
+                    else if (activitySelect.value === "very") {
+                        tdee = ree*1.725
+                    }
+
+                    tdee = tdee.toFixed(0)
+                    displaySex.innerHTML = sexSelect.value
+                    displayWeight.innerHTML = weightInput.value
+                    displayHeight.innerHTML = heightInput.value
+                    displayAge.innerHTML = ageInput.value
+                    displayActivity.innerHTML = activitySelect.value
+                    displayTDEE.innerHTML = tdee
+                }
+            }
+
+            function calcREE() {
+                let ree = 0
+                if (sexSelect.value === "male") {
+                    ree = 10*parseInt(weightInput.value) + 6.25*parseInt(heightInput.value) - 5*parseInt(ageInput.value) + 5
+                }
+                else if (sexSelect.value === "female") {
+                    ree = 10*parseInt(weightInput.value) + 6.25*parseInt(heightInput.value) - 5*parseInt(ageInput.value) - 161
+                }
+                return ree.toFixed(0)
+            }
+        </script>
+    </body>
+</html>
